@@ -42,6 +42,11 @@ class TraditionalWellEquipmentType
      */
     private $superstructure;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Aep::class, inversedBy="aepTraditionalWell")
+     */
+    private $aep;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +108,18 @@ class TraditionalWellEquipmentType
     public function setSuperstructure(?bool $superstructure): self
     {
         $this->superstructure = $superstructure;
+
+        return $this;
+    }
+
+    public function getAep(): ?Aep
+    {
+        return $this->aep;
+    }
+
+    public function setAep(?Aep $aep): self
+    {
+        $this->aep = $aep;
 
         return $this;
     }

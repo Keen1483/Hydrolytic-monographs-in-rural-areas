@@ -44,6 +44,11 @@ class DrillingPmh
      */
     private $lostWell;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Aep::class, inversedBy="aepPmh")
+     */
+    private $aep;
+
     public function __construct()
     {
         $this->lostWell = new ArrayCollection();
@@ -129,6 +134,18 @@ class DrillingPmh
                 $lostWell->setDrillingPmh(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAep(): ?Aep
+    {
+        return $this->aep;
+    }
+
+    public function setAep(?Aep $aep): self
+    {
+        $this->aep = $aep;
 
         return $this;
     }

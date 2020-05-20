@@ -27,6 +27,11 @@ class ImproveSourceEquipmentType
      */
     private $pipeline;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Aep::class, inversedBy="aepImproveSource")
+     */
+    private $aep;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +57,18 @@ class ImproveSourceEquipmentType
     public function setPipeline(string $pipeline): self
     {
         $this->pipeline = $pipeline;
+
+        return $this;
+    }
+
+    public function getAep(): ?Aep
+    {
+        return $this->aep;
+    }
+
+    public function setAep(?Aep $aep): self
+    {
+        $this->aep = $aep;
 
         return $this;
     }

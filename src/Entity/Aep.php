@@ -104,6 +104,21 @@ class Aep
      */
     private $createdAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DrillingPmh::class, mappedBy="aep")
+     */
+    private $aepPmh;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ImproveSourceEquipmentType::class, mappedBy="aep")
+     */
+    private $aepImproveSource;
+
+    /**
+     * @ORM\OneToMany(targetEntity=TraditionalWellEquipmentType::class, mappedBy="aep")
+     */
+    private $aepTraditionalWell;
+
     public function __construct()
     {
         $this->stickingBack = new ArrayCollection();
@@ -114,6 +129,9 @@ class Aep
         $this->managementMode = new ArrayCollection();
         $this->fundingMode = new ArrayCollection();
         $this->maintenance = new ArrayCollection();
+        $this->aepPmh = new ArrayCollection();
+        $this->aepImproveSource = new ArrayCollection();
+        $this->aepTraditionalWell = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -473,6 +491,99 @@ class Aep
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DrillingPmh[]
+     */
+    public function getAepPmh(): Collection
+    {
+        return $this->aepPmh;
+    }
+
+    public function addAepPmh(DrillingPmh $aepPmh): self
+    {
+        if (!$this->aepPmh->contains($aepPmh)) {
+            $this->aepPmh[] = $aepPmh;
+            $aepPmh->setAep($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAepPmh(DrillingPmh $aepPmh): self
+    {
+        if ($this->aepPmh->contains($aepPmh)) {
+            $this->aepPmh->removeElement($aepPmh);
+            // set the owning side to null (unless already changed)
+            if ($aepPmh->getAep() === $this) {
+                $aepPmh->setAep(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ImproveSourceEquipmentType[]
+     */
+    public function getAepImproveSource(): Collection
+    {
+        return $this->aepImproveSource;
+    }
+
+    public function addAepImproveSource(ImproveSourceEquipmentType $aepImproveSource): self
+    {
+        if (!$this->aepImproveSource->contains($aepImproveSource)) {
+            $this->aepImproveSource[] = $aepImproveSource;
+            $aepImproveSource->setAep($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAepImproveSource(ImproveSourceEquipmentType $aepImproveSource): self
+    {
+        if ($this->aepImproveSource->contains($aepImproveSource)) {
+            $this->aepImproveSource->removeElement($aepImproveSource);
+            // set the owning side to null (unless already changed)
+            if ($aepImproveSource->getAep() === $this) {
+                $aepImproveSource->setAep(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TraditionalWellEquipmentType[]
+     */
+    public function getAepTraditionalWell(): Collection
+    {
+        return $this->aepTraditionalWell;
+    }
+
+    public function addAepTraditionalWell(TraditionalWellEquipmentType $aepTraditionalWell): self
+    {
+        if (!$this->aepTraditionalWell->contains($aepTraditionalWell)) {
+            $this->aepTraditionalWell[] = $aepTraditionalWell;
+            $aepTraditionalWell->setAep($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAepTraditionalWell(TraditionalWellEquipmentType $aepTraditionalWell): self
+    {
+        if ($this->aepTraditionalWell->contains($aepTraditionalWell)) {
+            $this->aepTraditionalWell->removeElement($aepTraditionalWell);
+            // set the owning side to null (unless already changed)
+            if ($aepTraditionalWell->getAep() === $this) {
+                $aepTraditionalWell->setAep(null);
+            }
+        }
 
         return $this;
     }
