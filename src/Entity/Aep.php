@@ -119,6 +119,11 @@ class Aep
      */
     private $aepTraditionalWell;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LocalInformations::class, mappedBy="aep", orphanRemoval=true)
+     */
+    private $localInformations;
+
     public function __construct()
     {
         $this->stickingBack = new ArrayCollection();
@@ -132,6 +137,7 @@ class Aep
         $this->aepPmh = new ArrayCollection();
         $this->aepImproveSource = new ArrayCollection();
         $this->aepTraditionalWell = new ArrayCollection();
+        $this->localInformations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -582,6 +588,37 @@ class Aep
             // set the owning side to null (unless already changed)
             if ($aepTraditionalWell->getAep() === $this) {
                 $aepTraditionalWell->setAep(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LocalInformations[]
+     */
+    public function getLocalInformations(): Collection
+    {
+        return $this->localInformations;
+    }
+
+    public function addLocalInformation(LocalInformations $localInformation): self
+    {
+        if (!$this->localInformations->contains($localInformation)) {
+            $this->localInformations[] = $localInformation;
+            $localInformation->setAep($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocalInformation(LocalInformations $localInformation): self
+    {
+        if ($this->localInformations->contains($localInformation)) {
+            $this->localInformations->removeElement($localInformation);
+            // set the owning side to null (unless already changed)
+            if ($localInformation->getAep() === $this) {
+                $localInformation->setAep(null);
             }
         }
 

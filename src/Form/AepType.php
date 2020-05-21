@@ -70,6 +70,10 @@ class AepType extends AbstractType
                 'entry_type' => TraditionalWellType::class,
                 'entry_options' => ['label' => false],
             ])
+            ->add('localInformations', CollectionType::class, [
+                'entry_type' => LocalInformationsType::class,
+                'entry_options' => ['label' => false],
+            ])
         ;
     }
 
