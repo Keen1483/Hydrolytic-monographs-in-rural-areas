@@ -1,0 +1,11 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h1>Redirecting page after connection !</h1>
+    {% if app.user %}
+        <h2>You are welcome</h2>
+    {% else %}
+        <h3>Pour voir le contenu de cette page, connectez vous</h3>
+        <button><a href="{{ path("app_login") }}">Connexion !</a></button>
+    {% endif %}
+{% endblock %}
