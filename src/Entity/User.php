@@ -34,6 +34,16 @@ class User implements UserInterface
      */
     private $password;
 
+    // Création de la commande console pour ajouter un role à un user
+    public function addRoles(string $roles): self
+    {
+        if (!in_array($roles, $this->roles)) {
+            $this->roles[] = $roles;
+        }
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
