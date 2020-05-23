@@ -22,6 +22,7 @@ class AepType extends AbstractType
             ->add('linearNetwork')
             ->add('operatingState')
             ->add('createdAt')
+            ->add('user')
         ;
 
         // Import secondary forms
