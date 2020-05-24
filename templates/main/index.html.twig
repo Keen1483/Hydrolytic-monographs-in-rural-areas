@@ -3,12 +3,16 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-    <h1>Mome page !</h1>
-    <p>
+    <h1>Home page !</h1>
+    <div>
         {% for user in users %}
-            <p>{{ user.email }}</p>
+            <p>
+                Pseudo : {{ user.pseudo }} <br>
+                Nom : {{ user.name }} <br>
+                Email : {{ user.email }}
+            </p>
         {% endfor %}
-    </p>
+    </div>
     <button><a href="{{ path('redirect') }}">Connexion</a></button>
     {% if app.user %}
         {% for role in app.user.roles %}

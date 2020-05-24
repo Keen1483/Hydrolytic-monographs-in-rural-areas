@@ -161,6 +161,12 @@ class User implements UserInterface
         return $this;
     }
 
+    // On récupère la variable username
+    public function getName(): ?string
+    {
+        return $this->username;
+    }
+
     public function getPseudo(): ?string
     {
         return $this->pseudo;
