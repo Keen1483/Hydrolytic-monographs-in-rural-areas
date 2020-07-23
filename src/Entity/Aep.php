@@ -642,4 +642,9 @@ class Aep
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return 'aep';
+    }
 }

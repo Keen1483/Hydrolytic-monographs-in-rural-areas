@@ -1,0 +1,14 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <section>
+        <h1>Accueil AEP</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex assumenda 
+            minus qui at dolore sint illum rerum ratione numquam quas doloremque 
+            ea inventore explicabo in nulla sit itaque sapiente, ad maxime quam 
+            consequatur porro. Quos quo eum vel qui harum!</p>
+        <button><a href="{{ path('aep_type') }}">Remplir une AEP</a></button>
+    </section>
+{% endblock %}

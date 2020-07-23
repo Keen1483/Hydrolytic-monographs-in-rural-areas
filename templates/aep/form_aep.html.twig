@@ -1,9 +1,134 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AepController!{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-    {{ form_start(form) }}
-        {{ form(form) }}
-    {{ form_end(form) }}
+    <div id="formAep">
+        <h1>{{ title|upper }}</h1>
+
+        {{ form_start(form) }}
+            {# Informations lacales #}
+            <fieldset class="localInformations">
+                <legend><h3>Local informations</h3></legend>
+                {% for localInformation in form.localInformations %}
+                    {{ form(localInformation) }}
+                {% endfor %}
+            </fieldset>
+
+            {# AEP forage, prise en eau de surface, at captage par source #}
+            <fieldset class="aep">
+                <legend><h3>AEP {{ type }}</h3></legend>
+
+                {% if type == 'forage|autre' %}
+                    {{ form_row(form.depth) }}
+                {% endif %}
+
+                {{ form_row(form.buildingYear) }}
+                {{ form_row(form.funding) }}
+
+                {% if type == 'forage' %}
+                {# Dossier de recollement #}
+                <fieldset class="stickingBack">
+                    <legend><h3>Sticking back</h3></legend>
+                    {% for stickingback in form.stickingBack %}
+                        {{ form(stickingback) }}
+                    {% endfor %}
+                </fieldset>
+                {% endif %}
+
+                {{ form_row(form.productionCapacity) }}
+
+                {# stockage #}
+                <fieldset class="storage">
+                    <legend><h3>Storage</h3></legend>
+                    {% for store in form.storage %}
+                        {{ form(store) }}
+                    {% endfor %}
+                </fieldset>
+
+                {% if type == 'prise-en-eau-de-surface' %}
+                {# Mode de communication entre l'agent ou comité de gestion et la commune #}
+                <fieldset class="agentCommunicationMode">
+                    <legend><h3>Agent communication mode</h3></legend>
+                    {% for agentCommunication in form.agentCommunicationMode %}
+                        {{ form(agentCommunication) }}
+                    {% endfor %}
+                </fieldset>
+                {% endif %}
+
+                {% if type != 'captage-par-source' %}
+                {{ form_row(form.networkLength) }}
+                {% endif %}
+
+                {{ form_row(form.adductionType) }}
+
+                {% if type == 'captage-par-source' %}
+                    {{ form_row(form.linearNetwork) }}
+                {% endif %}
+
+                {# Type d'équipement #}
+                <fieldset class="equipmentAep">
+                    <legend><h3>equipment AEP</h3></legend>
+                    {% for equipment in form.equipmentAep %}
+                        {{ form(equipment) }}
+                    {% endfor %}
+                </fieldset>
+
+                {# Analyse et traitement de l'eau #}
+                <fieldset class="waterTraitmentAnalysis">
+                    <legend><h3>Water traitment analysis</h3></legend>
+                    {% for waterTraitment in form.waterTraitmentAnalysis %}
+                        {{ form(waterTraitment) }}
+                    {% endfor %}
+                </fieldset>
+
+                {{ form_row(form.operatingState) }}
+
+                {# Mode de gestion #}
+                <fieldset class="managementMode">
+                    <legend><h3>Management mode</h3></legend>
+                    {% for managementmode in form.managementMode %}
+                        {{ form(managementmode) }}
+                    {% endfor %}
+                </fieldset>
+
+                {# Mode de financement #}
+                <fieldset class="fundingMode">
+                    <legend><h3>Funding mode</h3></legend>
+                    {% for fundingmode in form.fundingMode %}
+                        {{ form(fundingmode) }}
+                    {% endfor %}
+                </fieldset>
+
+                {# Maintenance #}
+                <fieldset class="maintenance">
+                    <legend><h3>Maintenance</h3></legend>
+                    {% for maint in form.maintenance %}
+                        {{ form(maint) }}
+                    {% endfor %}
+                </fieldset>
+
+                {# Source d'AEP #}
+                <fieldset class="{{ source }}">
+                    <legend><h3>{{ type }}, {{ source }}</h3></legend>
+                    {% if source == 'pmh' or 'autre' %}
+                        {% for pmh in form.aepPmh %}
+                            {{ form(pmh) }}
+                        {% endfor %}
+                    {% elseif source == 'source-amelioree' or 'autre' %}
+                        {% for improveSource in form.aepImproveSource %}
+                            {{ form(improveSource) }}
+                        {% endfor %}
+                    {% elseif source == 'puit-traditionel' or 'autre' %}
+                        {% for traditionalWell in form.aepTrditionalWell %}
+                            {{ form(traditionalWell) }}
+                        {% endfor %}
+                    {% endif %}
+                </fieldset>
+
+                {{ form_row(form.createdAt) }}
+
+            </fieldset>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

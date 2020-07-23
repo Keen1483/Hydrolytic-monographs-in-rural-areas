@@ -1,0 +1,14 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <section>
+        <h1>Renseignez une AEP</h1>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. In voluptate 
+            esse expedita temporibus praesentium vitae?</p>
+        <p><button><a href="{{ path('aep_source', {'type': 'forage'}) }}">Forage</a></button></p>
+        <p><button><a href="{{ path('aep_source', {'type': 'prise-en-eau-de-surface'}) }}">Prise en eau de surface</a></button></p>
+        <p><button><a href="{{ path('aep_source', {'type': 'captage-par-source'}) }}">Captage par source</a></button></p>
+    </section>
+{% endblock %}
