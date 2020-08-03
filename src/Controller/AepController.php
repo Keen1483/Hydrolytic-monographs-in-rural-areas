@@ -36,7 +36,47 @@ class AepController extends AbstractController
      */
     public function formAep(Request $request, EntityManagerInterface $entityManager, $type, $src)
     {
-        $aep = $this->aepConstructForm();
+        $aep = new Aep();
+
+        $stickingBack = new StickingBack();
+        $aep->getStickingBack()->add($stickingBack);
+
+        $storage = new Storage();
+        $aep->getStorage()->add($storage);
+
+        $agentCommunicationMode = new AgentCommunicationMode();
+        $aep->getAgentCommunicationMode()->add($agentCommunicationMode);
+
+        $equipmentAep = new EquipmentAep();
+        $aep->getEquipmentAep()->add($equipmentAep);
+
+        $waterTraitmentAnalysis = new WaterTraitmentAnalysis();
+        $aep->getWaterTraitmentAnalysis()->add($waterTraitmentAnalysis);
+
+        $managementMode = new ManagementMode();
+        $aep->getManagementMode()->add($managementMode);
+
+        $fundingMode = new FundingMode();
+        $aep->getFundingMode()->add($fundingMode);
+
+        $maintenance = new Maintenance();
+        $aep->getMaintenance()->add($maintenance);
+
+        $lostWell = new LostWell();
+        $aepPmh = new DrillingPmh();
+        $aepPmh->getLostWell()->add($lostWell);
+        $aep->getAepPmh()->add($aepPmh);
+
+        $aepImproveSource = new ImproveSourceEquipmentType();
+        $aep->getAepImproveSource()->add($aepImproveSource);
+
+        $aepTraditionalWell = new TraditionalWellEquipmentType();
+        $aep->getAepTraditionalWell()->add($aepTraditionalWell);
+
+        $gpsCoordinates = new GpsCoordinates();
+        $localInformations = new LocalInformations();
+        $localInformations->getGpsCoordinates()->add($gpsCoordinates);
+        $aep->getLocalInformations()->add($localInformations);
 
         $form = $this->createForm(AepType::class, $aep);
 
@@ -133,7 +173,5 @@ class AepController extends AbstractController
         $localInformations = new LocalInformations();
         $localInformations->getGpsCoordinates()->add($gpsCoordinates);
         $aep->getLocalInformations()->add($localInformations);
-
-        return $aep;
     }
 }

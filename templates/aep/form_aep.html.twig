@@ -16,7 +16,7 @@
             </fieldset>
 
             {# AEP forage, prise en eau de surface, at captage par source #}
-            <fieldset class="aep">
+            <fieldset class="type" data-type-aep="{{ type }}">
                 <legend><h3>AEP {{ type }}</h3></legend>
 
                 {% if type == 'forage|autre' %}
@@ -109,7 +109,7 @@
                 </fieldset>
 
                 {# Source d'AEP #}
-                <fieldset class="{{ source }}">
+                <fieldset class="source" data-source-aep="{{ source }}">
                     <legend><h3>{{ type }}, {{ source }}</h3></legend>
                     {% if source == 'pmh' or 'autre' %}
                         {% for pmh in form.aepPmh %}
