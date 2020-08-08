@@ -4,7 +4,12 @@ namespace App\Form;
 
 use App\Entity\Aep;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,16 +18,50 @@ class AepType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('depth')
-            ->add('buildingYear')
-            ->add('funding')
-            ->add('productionCapacity')
-            ->add('networkLength')
-            ->add('adductionType')
-            ->add('linearNetwork')
-            ->add('operatingState')
-            ->add('createdAt')
-            ->add('user')
+            ->add('depth', NumberType::class, [
+                'required' => false,
+                'attr' => [
+                    'class' => 'easy-get easy-put depth'
+                ]
+            ])
+            ->add('buildingYear', TextType::class, [
+                'attr' => [
+                    'class' => 'datepicker'
+                ]
+            ])
+            ->add('funding', ChoiceType::class, [
+                'choices' => [
+                    'CAS' => 'CAS',
+                    'BIP' => 'BIP'
+                ]
+            ])
+            ->add('productionCapacity', NumberType::class, [
+                'attr' => [
+                    'class' => 'easy-get easy-put'
+                ]
+            ])
+            ->add('networkLength', NumberType::class, [
+                'required' => false,
+                'attr' => [
+                    'class' => 'easy-get easy-put'
+                ]
+            ])
+            ->add('adductionType', ChoiceType::class, [
+                'choices' => [
+                    'Par refoulement' => 'par refoulement',
+                    'Par gravitation' => 'par gravitation',
+                    'Mixte' => 'mixte'
+                ]
+            ])
+            ->add('linearNetwork', TextType::class, [
+                'required' => false
+            ])
+            ->add('operatingState', ChoiceType::class, [
+                'choices' => [
+                    'Fonctionnel' => 'fonctionnel',
+                    'Non fonctionnel' => 'non fonctionnel'
+                ]
+            ])
         ;
 
         // Import secondary forms

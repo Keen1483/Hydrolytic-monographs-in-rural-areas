@@ -4,6 +4,10 @@ namespace App\Form;
 
 use App\Entity\WaterTraitmentAnalysis;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,11 +16,28 @@ class WaterTraitmentAnalysisType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('unitTraitmentPresence')
-            ->add('analysisFrequency')
-            ->add('lastAnalysisAt')
-            ->add('appliedTraitmentType')
-            ->add('aep')
+            ->add('unitTraitmentPresence', ChoiceType::class, [
+                'choices' => [
+                    'Oui' => 'oui',
+                    'Non' => 'non'
+                ]
+            ])
+            ->add('analysisFrequency', ChoiceType::class, [
+                'choices' => [
+                    'Par jour' => 'par jour',
+                    'Par semaine' => 'par semaine',
+                    'Par mois' => 'par mois',
+                    'Par trimestre' => 'par trimestre',
+                    'Par semestre' => 'par semestre',
+                    'Par année' => 'par année'
+                ]
+            ])
+            ->add('lastAnalysisAt', TextType::class, [
+                'attr' => [
+                    'class' => 'analysis-datepicker'
+                ]
+            ])
+            ->add('appliedTraitmentType', TextareaType::class)
         ;
     }
 
