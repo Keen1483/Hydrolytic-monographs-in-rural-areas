@@ -36,61 +36,37 @@ class AepController extends AbstractController
      *      "src"="pmh|source-amelioree|puit-traditionel|autre"}
      * )
      */
-    public function formAep(Aep $aep = null, StickingBack $stickingBack = null, Storage $storage = null,
-        AgentCommunicationMode $agentCommunicationMode = null, EquipmentAep $equipmentAep = null,
-        WaterTraitmentAnalysis $waterTraitmentAnalysis = null, ManagementMode $managementMode = null,
-        FundingMode $fundingMode = null, Maintenance $maintenance = null, LostWell $lostWell = null,
-        DrillingPmh $aepPmh = null, ImproveSourceEquipmentType $aepImproveSource = null,
-        TraditionalWellEquipmentType $aepTraditionalWell = null, GpsCoordinates $gpsCoordinates = null,
-        LocalInformations $localInformations = null,
-        Request $request, EntityManagerInterface $entityManager, $type, $src)
+    public function formAep(Request $request, EntityManagerInterface $entityManager, $type, $src)
     {
         // If the entities are null, we instantiate them
-        if(!$aep) {
-            $aep = new Aep();
-        }
-        if(!$stickingBack) {
-            $stickingBack = new StickingBack();
-        }
-        if(!$storage) {
-            $storage = new Storage();
-        }
-        if(!$agentCommunicationMode) {
-            $agentCommunicationMode = new AgentCommunicationMode();
-        }
-        if(!$equipmentAep) {
-            $equipmentAep = new EquipmentAep();
-        }
-        if(!$waterTraitmentAnalysis) {
-            $waterTraitmentAnalysis = new WaterTraitmentAnalysis();
-        }
-        if(!$managementMode) {
-            $managementMode = new ManagementMode();
-        }
-        if(!$fundingMode) {
-            $fundingMode = new FundingMode();
-        }
-        if(!$maintenance) {
-            $maintenance = new Maintenance();
-        }
-        if(!$lostWell) {
-            $lostWell = new LostWell();
-        }
-        if(!$aepPmh) {
-            $aepPmh = new DrillingPmh();
-        }
-        if(!$aepImproveSource) {
-            $aepImproveSource = new ImproveSourceEquipmentType();
-        }
-        if(!$aepTraditionalWell) {
-            $aepTraditionalWell = new TraditionalWellEquipmentType();
-        }
-        if(!$gpsCoordinates) {
-            $gpsCoordinates = new GpsCoordinates();
-        }
-        if(!$localInformations) {
-            $localInformations = new LocalInformations();
-        }
+        $aep = new Aep();
+        
+        $stickingBack = new StickingBack();
+        
+        $storage = new Storage();
+        
+        $agentCommunicationMode = new AgentCommunicationMode();
+        
+        $equipmentAep = new EquipmentAep();
+        
+        $waterTraitmentAnalysis = new WaterTraitmentAnalysis();
+        
+        $managementMode = new ManagementMode();
+        
+        $fundingMode = new FundingMode();
+        
+        $maintenance = new Maintenance();
+        
+        $lostWell = new LostWell();
+        $aepPmh = new DrillingPmh();
+        
+        $aepImproveSource = new ImproveSourceEquipmentType();
+        
+        $aepTraditionalWell = new TraditionalWellEquipmentType();
+        
+        $gpsCoordinates = new GpsCoordinates();
+        $localInformations = new LocalInformations();
+        
 
         $aep->getStickingBack()->add($stickingBack);
 
@@ -125,14 +101,16 @@ class AepController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             // We fill the fields not fill by the user
 
-            $aep->setCreatedAt(new \DateTime());
             // ------ On chope un user dans la base
             $repo = $this->getDoctrine()->getRepository(User::class);
-            $user = $repo->find(195);
+            $user = $repo->find(139);
             $aep->setUser($user);
 
             // On complète les données manquantes du formulaire
-            $aep->setCreatedAt(new \DateTime());
+            $aep->setCreatedAt(new \DateTime())
+                ->setType($type)
+                ->setSource($src)
+            ;
 
             $stickingBack->setAep($aep);
 
@@ -183,7 +161,7 @@ class AepController extends AbstractController
             // Sauvegarde des données
             $entityManager->flush();
             
-            return $this->redirectToRoute('app_homepage');
+            return $this->redirectToRoute('aep_show', ['id' => $aep->getId()], 301);
         }
 
         return $this->render('aep/form_aep.html.twig', [
@@ -191,6 +169,97 @@ class AepController extends AbstractController
             'type' => $type,
             'source' => $src,
             'title' => $type.': '.$src,
+            'edit_mode' => $aep->getId() !== null,
+        ]);
+    }
+
+    /**
+     * @Route("/{id<\d+>}/edit", name="edit")
+     */
+    public function editAep(Aep $aep, Request $request, EntityManagerInterface $entityManager)
+    {
+        $stickingBack = $this->getDoctrine()->getRepository(StickingBack::class)->findOneByAep($aep);
+        $storage = $this->getDoctrine()->getRepository(Storage::class)->findOneByAep($aep);
+        $agentCommunicationMode = $this->getDoctrine()->getRepository(AgentCommunicationMode::class)->findOneByAep($aep);
+        $equipmentAep = $this->getDoctrine()->getRepository(EquipmentAep::class)->findOneByAep($aep);
+        $waterTraitmentAnalysis = $this->getDoctrine()->getRepository(WaterTraitmentAnalysis::class)->findOneByAep($aep);
+        $managementMode = $this->getDoctrine()->getRepository(ManagementMode::class)->findOneByAep($aep);
+        $fundingMode = $this->getDoctrine()->getRepository(FundingMode::class)->findOneByAep($aep);
+        $maintenance = $this->getDoctrine()->getRepository(Maintenance::class)->findOneByAep($aep);
+
+        $aepPmh = $this->getDoctrine()->getRepository(DrillingPmh::class)->findOneByAep($aep);
+        $lostWell = $this->getDoctrine()->getRepository(LostWell::class)->findOneByDrillingPmh($aepPmh);
+
+        $aepImproveSource = $this->getDoctrine()->getRepository(ImproveSourceEquipmentType::class)->findOneByAep($aep);
+        $aepTraditionalWell = $this->getDoctrine()->getRepository(TraditionalWellEquipmentType::class)->findOneByAep($aep);
+
+        $localInformations = $this->getDoctrine()->getRepository(LocalInformations::class)->findOneByAep($aep);
+        $gpsCoordinates = $this->getDoctrine()->getRepository(GpsCoordinates::class)->findOneByLocalInformations($localInformations);
+    
+        $aep->getStickingBack()->add($stickingBack);
+
+        $aep->getStorage()->add($storage);
+
+        $aep->getAgentCommunicationMode()->add($agentCommunicationMode);
+
+        $aep->getEquipmentAep()->add($equipmentAep);
+
+        $aep->getWaterTraitmentAnalysis()->add($waterTraitmentAnalysis);
+
+        $aep->getManagementMode()->add($managementMode);
+
+        $aep->getFundingMode()->add($fundingMode);
+
+        $aep->getMaintenance()->add($maintenance);
+
+        $aepPmh->getLostWell()->add($lostWell);
+        $aep->getAepPmh()->add($aepPmh);
+
+        $aep->getAepImproveSource()->add($aepImproveSource);
+
+        $aep->getAepTraditionalWell()->add($aepTraditionalWell);
+
+        $localInformations->getGpsCoordinates()->add($gpsCoordinates);
+        $aep->getLocalInformations()->add($localInformations);
+        
+        $form = $this->createForm(AepType::class, $aep);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            // Récupération des données du formulaire
+            $aep = $form->getData();
+
+            // Persistance des données du formulaire
+            $entityManager->persist($stickingBack);
+            $entityManager->persist($storage);
+            $entityManager->persist($agentCommunicationMode);
+            $entityManager->persist($equipmentAep);
+            $entityManager->persist($waterTraitmentAnalysis);
+            $entityManager->persist($managementMode);
+            $entityManager->persist($fundingMode);
+            $entityManager->persist($maintenance);
+            $entityManager->persist($lostWell);
+            $entityManager->persist($aepPmh);
+            $entityManager->persist($aepImproveSource);
+            $entityManager->persist($aepTraditionalWell);
+            $entityManager->persist($gpsCoordinates);
+            $entityManager->persist($localInformations);
+            $entityManager->persist($aep);
+
+            // Sauvegarde des données
+            $entityManager->flush();
+            
+            return $this->redirectToRoute('aep_show', ['id' => $aep->getId()], 301);
+        }
+
+        return $this->render('aep/form_aep.html.twig', [
+            'form' => $form->createView(),
+            'title' => 'Edit mode',
+            'type' => $aep->getType(),
+            'source' => $aep->getSource(),
+            'edit_mode' => $aep->getId() !== null,
         ]);
     }
 
@@ -200,6 +269,7 @@ class AepController extends AbstractController
     public function showAep(AepRepository $repo, $id)
     {
         $aep = $repo->find($id);
+        $user = $aep->getUser();
         $stickingBack = $this->getDoctrine()->getRepository(StickingBack::class)->findOneByAep($aep);
         $storage = $this->getDoctrine()->getRepository(Storage::class)->findOneByAep($aep);
         $agentCommunicationMode = $this->getDoctrine()->getRepository(AgentCommunicationMode::class)->findOneByAep($aep);
@@ -220,6 +290,7 @@ class AepController extends AbstractController
 
         return $this->render('aep/show_aep.html.twig', [
             'aep' => $aep,
+            'user' => $user,
             'stickingBack' => $stickingBack,
             'storage' => $storage,
             'agentCommunicationMode' => $agentCommunicationMode,

@@ -20,7 +20,9 @@ class MaintenanceType extends AbstractType
                     'Service de la Commune' => 'service de la Commune'
                 ]
             ])
-            ->add('others', TextareaType::class)
+            ->add('others', TextareaType::class, [
+                'required' => false
+            ])
         ;
     }
 

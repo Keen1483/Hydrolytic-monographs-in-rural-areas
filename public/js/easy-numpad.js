@@ -19,13 +19,13 @@ function show_easy_numpad() {
                             <td><a href="7" onclick="easynum()">7</a></td>
                             <td><a href="8" onclick="easynum()">8</a></td>
                             <td><a href="9" onclick="easynum()">9</a></td>
-                            <td><a href="Del" class="del" id="del" onclick="easy_numpad_del()"><span class="material-icons">backspace</span></a></td>
+                            <td><a href="Del" class="del bg-info" id="del" onclick="easy_numpad_del()"><span class="material-icons">backspace</span></a></td>
                         </tr>
                         <tr>
                             <td><a href="4" onclick="easynum()">4</a></td>
                             <td><a href="5" onclick="easynum()">5</a></td>
                             <td><a href="6" onclick="easynum()">6</a></td>
-                            <td><a href="Clear" class="clear" id="clear" onclick="easy_numpad_clear()"><span class="material-icons">remove</span></a></td>
+                            <td><a href="Clear" class="clear bg-warning" id="clear" onclick="easy_numpad_clear()"><span class="material-icons">delete_sweep</span></a></td>
                         </tr>
                         <tr>
                             <td><a href="1" onclick="easynum()">1</a></td>

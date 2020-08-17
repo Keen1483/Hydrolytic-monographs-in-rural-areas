@@ -24,10 +24,8 @@ class AepType extends AbstractType
                     'class' => 'easy-get easy-put depth'
                 ]
             ])
-            ->add('buildingYear', TextType::class, [
-                'attr' => [
-                    'class' => 'datepicker'
-                ]
+            ->add('buildingYear', DateType::class, [
+                'widget' => 'single_text'
             ])
             ->add('funding', ChoiceType::class, [
                 'choices' => [

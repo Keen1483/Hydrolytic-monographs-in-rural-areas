@@ -15,14 +15,101 @@
             {# plugin easy numpad stylesheet reference #}
             <link rel="stylesheet" href="{{ asset('css/easy-numpad.css') }}">
 
-            {# jQuery UI Datepicker #}
+            {# jQuery datepicker #}
             <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+            {# plugin jQuery datepicker stylesheets reference #}
+            <link rel="stylesheet" href="{{ asset('css/datepicker/jquery.dateselect.css') }}">
         {% endblock %}
     </head>
     <body>
-        <div class="container">
-            {% block body %}{% endblock %}
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+            <div class="container">
+                <a href="{{ path('aep_home') }}" class="navbar-brand mb-3">AEP</a>
+                <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Share</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">About</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container mb-5" style="margin-top: 7rem; min-height: 444px;">
+            <div class="row justify-content-center custom-line">
+                <div class="col col-md-8" style="background-color: rgba(0,0,0, .06)">
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
         </div>
+
+            <!-- MAIN FOOTER -->
+    <footer id="main-footer" class="bg-dark">
+        <div class="container">
+            <div class="pt-1 text-center">
+                <p class="mb-1" style="color: lightblue;">Copyright &copy 2020</p>
+                <h4 style="color: lightblue;">Contacts:</h4>
+            </div>
+
+            <div class="row pb-2 mt-0 justify-content-between">
+                <div class="rounded col col-3">
+                    <a href="https://twitter.com/DongmoGeraud"><img class="icon rounded" src="{{ asset('images/icons/twitter.png') }}" alt="twitter"></a>
+                </div>
+                <div class="rounded col col-3">
+                    <a href="https://api.whatsapp.com/send?phone=237 670142491"><img class="icon rounded" src="{{ asset('images/icons/whatsapp.png') }}" alt=""></a>
+                </div>
+                <div class="rounded col col-3">
+                    <a href="https://linkedin.com/mwlite/in/bernard-geraud-3752a01aa"><img class="icon rounded" src="{{ asset('images/icons/linkedIn.png') }}" alt="facebook"></a>
+                </div>
+            </div>
+            <div class="text-center mb">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#contactModal">Contact Me</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CONTACT US -->
+    <div class="modal fade text-dark" id="contactModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contactModalTitle">
+                        Contact Me
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea class="form-control"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-block">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
         {% block javascripts %}
             {# bootstrap 4.5 javascript reference #}
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" 
@@ -35,9 +122,10 @@
                 integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" 
                 crossorigin="anonymous"></script>
 
-            {# jQury 3.5 
+            {# jQury 3.5 #}
             <script src="{{ asset('js/jquery.js') }}"></script>
-            #}
+            {# jQuery mousewheel #}
+            <script src="{{ asset('js/datepicker/jquery.mousewheel.js') }}"></script>
 
             {# form AEP #}
             <script src="{{ asset('js/formAep.js') }}"></script>
@@ -45,9 +133,8 @@
             {# plugin easy numpad javascript reference #}
             <script src="{{ asset('js/easy-numpad.js') }}"></script>
 
-            {# plugin jQuery UI Datepicker javascript reference #}
-            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+            {# plugin jQuery datepicker javascript reference #}
+            <script src="{{ asset('js/datepicker/jquery.dateselect.js') }}"></script>
         {% endblock %}
     </body>
 </html>

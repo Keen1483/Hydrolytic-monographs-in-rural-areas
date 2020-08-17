@@ -37,7 +37,8 @@ class ImproveSourceEquipmentType
         return $this->id;
     }
 
-    public function getSuperstructure(): ?string
+    // a été modifié: ?string en ?bool
+    public function getSuperstructure(): ?bool
     {
         return $this->superstructure;
     }
@@ -49,7 +50,8 @@ class ImproveSourceEquipmentType
         return $this;
     }
 
-    public function getPipeline(): ?string
+    // a été modifié: ?string en ?bool
+    public function getPipeline(): ?bool
     {
         return $this->pipeline;
     }

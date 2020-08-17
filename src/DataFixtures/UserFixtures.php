@@ -35,12 +35,12 @@ class UserFixtures extends Fixture
     {
         $faker = \Faker\Factory::create('fr_FR');
 
-        for($i = 1; $i <= 46; $i++) {
+        for($i = 1; $i <= 3; $i++) {
             $user = new User();
 
             $user->setEmail($faker->email)
                 ->setPassword($this->passwordEncoder->encodePassword(
-                    $user, 'testest'
+                    $user, 'password'
                 ))
                 ->setUsername($faker->name)
                 ->setPseudo($faker->userName)
@@ -49,13 +49,15 @@ class UserFixtures extends Fixture
             ;
             $manager->persist($user);
 
-            for($j = 1; $j <= random_int(1, 11); $j++) {
+            for($j = 1; $j <= random_int(1, 2); $j++) {
                 if(random_int(0, 1)) {
                     $aep = new Aep();
 
                     $funding = ['CAS', 'BIP'];
-                    $adductionType = ['Par refoulement', 'Par gravitation', 'Mixte'];
-                    $operatingState = ['Fonctionnel', 'Non fonctionnel'];
+                    $adductionType = ['par refoulement', 'par gravitation', 'mixte'];
+                    $operatingState = ['fonctionnel', 'non fonctionnel'];
+                    $typeAep = ['forage', 'prise-en-eau-de-surface', 'captage-par-source'];
+                    $sourceAep = ['pmh', 'source-amelioree', 'puit-traditionel', 'autre'];
                     $aep->setDepth($faker->randomFloat(random_int(2, 4), 70, 160))
                         ->setBuildingYear(new \DateTime($faker->date()))
                         ->setFunding($funding[array_rand($funding, 1)])
@@ -65,13 +67,15 @@ class UserFixtures extends Fixture
                         ->setLinearNetwork($faker->sentence())
                         ->setOperatingState($operatingState[array_rand($operatingState, 1)])
                         ->setCreatedAt(new \DateTime())
+                        ->setType($typeAep[array_rand($typeAep, 1)])
+                        ->setSource($sourceAep[array_rand($sourceAep, 1)])
                         ->setUser($user)
                     ;
 
                     // Dossier de recollement
                     $stickingBack = new StickingBack();
 
-                    $exist = ['Existant', 'Non existant'];
+                    $exist = ['existant', 'non existant'];
                     $stickingBack->setExist($exist[array_rand($exist, 1)])
                                 ->setComments($faker->paragraph())
                                 ->setAep($aep)
@@ -81,8 +85,8 @@ class UserFixtures extends Fixture
                     // Stockage
                     $storage = new Storage();
 
-                    $sufficient = ['Suffisant', 'Non suffisant'];
-                    $structureStatus = ['Bonne structure', 'Structure endommagée'];
+                    $sufficient = ['suffisant', 'non suffisant'];
+                    $structureStatus = ['bonne structure', 'structure endommagée'];
                     $storage->setQuantity($faker->randomFloat(random_int(2, 4), 5000, 25000))
                             ->setSufficient($sufficient[array_rand($sufficient, 1)])
                             ->setStructureStatus($structureStatus[array_rand($structureStatus, 1)])

@@ -21,7 +21,9 @@ class ManagementModeType extends AbstractType
                     'Aucun' => 'aucun'
                 ]
             ])
-            ->add('others', TextareaType::class)
+            ->add('others', TextareaType::class, [
+                'required' => false
+            ])
         ;
     }
 

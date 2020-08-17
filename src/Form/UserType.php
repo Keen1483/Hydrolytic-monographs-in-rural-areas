@@ -13,12 +13,7 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('roles')
             ->add('password')
-            ->add('username')
-            ->add('pseudo')
-            ->add('code')
-            ->add('createdAt')
         ;
     }
 

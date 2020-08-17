@@ -17,9 +17,9 @@
                     {{ form_row(localInformation.locality, {'label': 'Localité ou village', 'attr': {'placeholder': 'localité ou village de la source'}}) }}
                     {{ form_row(localInformation.district, {'label': 'Quartier', 'attr': {'placeholder': 'quartier de la source'}}) }}
                     {{ form_row(localInformation.population, {'label': 'Population', 'attr': {'placeholder': 'population de la localité', 'inputmode': 'decimal'}}) }}
-
+                    <hr class="bg-primary">
                     <fieldset class="gpsCoordinates">
-                        <legend><h3>GPS coordinates de la souce</h3></legend>
+                        <legend><h3>Coordonées GPS de la souce</h3></legend>
                         {% for gpsCoordinates in localInformation.gpsCoordinates %}
                             {{ form_row(gpsCoordinates.latitude, {'label': 'Latitude', 'attr': {'placeholder': 'latitude', 'inputmode': 'decimal'}}) }}
                             {{ form_row(gpsCoordinates.longitude, {'label': 'Longitude', 'attr': {'placeholder': 'longitude', 'inputmode': 'decimal'}}) }}
@@ -27,6 +27,7 @@
                     </fieldset>
                 {% endfor %}
             </fieldset>
+            <hr class="bg-primary">
 
             {# AEP forage, prise en eau de surface, at captage par source #}
             <fieldset class="type" data-type-aep="{{ type }}">
@@ -41,7 +42,7 @@
 
                 {{ form_row(form.buildingYear, {'label': 'Année de construction'}) }}
                 {{ form_row(form.funding, {'label': 'Financement', 'attr': {'placeholder': 'financement'}}) }}
-
+                <hr class="bg-primary">
                 {% if type is same as ('forage') %}
                     {# Dossier de recollement #}
                     <fieldset class="stickingBack">
@@ -51,10 +52,11 @@
                             {{ form_row(stickingback.comments, {'label': 'Commentaires', 'attr': {'placeholder': 'commentaires'}}) }}
                         {% endfor %}
                     </fieldset>
+                    <hr class="bg-primary">
                 {% endif %}
 
                 {{ form_row(form.productionCapacity, {'label': 'Capacité de production', 'attr': {'placeholder': 'capacité de production', 'inputmode': 'decimal'}}) }}
-
+                <hr>
                 {# stockage #}
                 <fieldset class="storage">
                     <legend><h3>Stockage</h3></legend>
@@ -64,6 +66,7 @@
                         {{ form_row(store.structureStatus, {'label': 'Etat de la structure'}) }}
                     {% endfor %}
                 </fieldset>
+                <hr class="bg-primary">
 
                 {% if type is same as ('prise-en-eau-de-surface') %}
                     {# Mode de communication entre l'agent ou comité de gestion et la commune #}
@@ -77,6 +80,7 @@
                             }}) }}
                         {% endfor %}
                     </fieldset>
+                    <hr class="bg-primary">
                 {% endif %}
 
                 {% if type != 'captage-par-source' %}
@@ -93,7 +97,7 @@
                         'placeholder': 'réseau linéaire'
                     }}) }}
                 {% endif %}
-
+                <hr>
                 {# Type d'équipement #}
                 <fieldset class="equipmentAep">
                     <legend><h3>Type d'équipement</h3></legend>
@@ -102,6 +106,7 @@
                         {{ form_row(equipment.others, {'label': 'Autre', 'attr': {'placeholder': 'autre à préciser'}}) }}
                     {% endfor %}
                 </fieldset>
+                <hr class="bg-primary">
 
                 {# Analyse et traitement de l'eau #}
                 <fieldset class="waterTraitmentAnalysis">
@@ -113,9 +118,11 @@
                         {{ form_row(waterTraitment.appliedTraitmentType, {'label': 'Type de traitement appliqué', 'attr': {'placeholder': 'Type de traitement appliqué'}}) }}
                     {% endfor %}
                 </fieldset>
+                <hr class="bg-primary">
 
                 {{ form_row(form.operatingState, {'label': 'Etat de fonctionement'}) }}
 
+                <hr>
                 {# Mode de gestion #}
                 <fieldset class="managementMode">
                     <legend><h3>Mode de gestion</h3></legend>
@@ -124,6 +131,7 @@
                         {{ form_row(managementMode.others, {'label': 'Autre', 'attr': {'placeholder': 'autre à préciser'}}) }}
                     {% endfor %}
                 </fieldset>
+                <hr class="bg-primary">
 
                 {# Mode de financement #}
                 <fieldset class="fundingMode">
@@ -133,6 +141,7 @@
                         {{ form_row(fundingMode.others, {'label': 'Autre', 'attr': {'placeholder': 'autre à préciser'}}) }}
                     {% endfor %}
                 </fieldset>
+                <hr>
 
                 {# Maintenance #}
                 <fieldset class="maintenance">
@@ -142,6 +151,7 @@
                         {{ form_row(maintenance.others, {'label': 'Autre', 'attr': {'placeholder': 'autre à préciser'}}) }}
                     {% endfor %}
                 </fieldset>
+                <hr class="bg-primary">
 
                 {# Source d'AEP #}
                 <fieldset class="source" data-source-aep="{{ source }}">
@@ -182,7 +192,11 @@
 
             </fieldset>
 
-            <button type="submit" class="btn btn-success">Enregistrer</button>
+            {% if edit_mode %}
+                <button type="submit" class="btn btn-success">Enregistrer les modifications</button>
+            {% else %}
+                <button type="submit" class="btn btn-success">Enregistrer</button>
+            {% endif %}
         {{ form_end(form) }}
     </div>
 {% endblock %}

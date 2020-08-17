@@ -130,6 +130,16 @@ class Aep
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $type;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $source;
+
     public function __construct()
     {
         $this->stickingBack = new ArrayCollection();
@@ -163,6 +173,7 @@ class Aep
         return $this;
     }
 
+    // a été modifié: ?\DateTimeInterface en ?string
     public function getBuildingYear(): ?\DateTimeInterface
     {
         return $this->buildingYear;
@@ -646,5 +657,29 @@ class Aep
     public function __toString()
     {
         return 'aep';
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getSource(): ?string
+    {
+        return $this->source;
+    }
+
+    public function setSource(string $source): self
+    {
+        $this->source = $source;
+
+        return $this;
     }
 }

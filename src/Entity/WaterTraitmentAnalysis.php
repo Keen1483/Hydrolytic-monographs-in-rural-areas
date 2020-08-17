@@ -72,6 +72,7 @@ class WaterTraitmentAnalysis
         return $this;
     }
 
+    // a été modifié: ?\DateTimeInterface en ?string
     public function getLastAnalysisAt(): ?\DateTimeInterface
     {
         return $this->lastAnalysisAt;

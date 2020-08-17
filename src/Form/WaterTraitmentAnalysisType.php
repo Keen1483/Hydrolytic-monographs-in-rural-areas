@@ -32,10 +32,8 @@ class WaterTraitmentAnalysisType extends AbstractType
                     'Par année' => 'par année'
                 ]
             ])
-            ->add('lastAnalysisAt', TextType::class, [
-                'attr' => [
-                    'class' => 'analysis-datepicker'
-                ]
+            ->add('lastAnalysisAt', DateType::class, [
+                'widget' => 'single_text'
             ])
             ->add('appliedTraitmentType', TextareaType::class)
         ;

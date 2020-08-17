@@ -21,7 +21,9 @@ class EquipmentAepType extends AbstractType
                     'Pompe immergée raccordée à un groupe électrogène' => 'Pompe immergée raccordée à un groupe électrogène'
                 ]
             ])
-            ->add('others', TextareaType::class)
+            ->add('others', TextareaType::class, [
+                'required' => false
+            ])
         ;
     }
 
