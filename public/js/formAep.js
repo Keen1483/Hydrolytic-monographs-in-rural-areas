@@ -20,7 +20,7 @@ $(function () {
         $('.analysis-datepicker').datepicker();
     }
 
-    if(document.getElementById('formUser')) {
+    if(document.getElementById('formU')) {
 
         $('#user_password').attr('type', 'password');
 

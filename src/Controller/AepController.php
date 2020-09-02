@@ -103,7 +103,7 @@ class AepController extends AbstractController
 
             // ------ On chope un user dans la base
             $repo = $this->getDoctrine()->getRepository(User::class);
-            $user = $repo->find(139);
+            $user = $repo->find(151);
             $aep->setUser($user);
 
             // On complète les données manquantes du formulaire
@@ -264,6 +264,27 @@ class AepController extends AbstractController
     }
 
     /**
+     * @Route("/liste", name="liste")
+     */
+    public function aepListe(AepRepository $repo)
+    {
+        $aeps = $repo->findAll();
+        $listeAep = [];
+
+        foreach ($aeps as $aep) {
+            $listeAep[] = [
+                'aep' => $aep,
+                'user' => $aep->getUser()
+            ];
+        }
+
+        return $this->render('aep/aep_liste.html.twig', [
+            'liste_aep' => $listeAep,
+            'title' => 'Liste des AEP',
+        ]);
+    }
+
+    /**
      * @Route("/{id<\d+>}", name="show")
      */
     public function showAep(AepRepository $repo, $id)
@@ -308,6 +329,8 @@ class AepController extends AbstractController
 
             'localInformations' => $localInformations,
             'gpsCoordinates' => $gpsCoordinates,
+
+            'title' => 'AEP '.$aep->getId(),
         ]);
     }
 

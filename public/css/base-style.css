@@ -1,0 +1,95 @@
+body {
+    --bg-color : #333;
+    --font-color: #fff;
+    --primary-color: #008ed6;
+    --dark-overlay: rgba(0, 0, 0, 0.3);
+    --icon-size: 25px;
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--font-color);
+}
+
+.navbar {
+    border-bottom: var(--primary-color) 3px solid;
+    opacity: 0.8;
+}
+
+#main-footer {
+    border-top: var(--primary-color) 3px solid;
+    opacity: 0.8;
+}
+
+#home-section {
+    min-height: 700px;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+#home-section .dark-overlay {
+    background-color: var(--dark-overlay);
+    /*position: absolute;*/
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 700px;
+}
+
+#home-section .home-inner {
+    padding-top: 110px;
+    padding-bottom: 50px;
+}
+
+#home-section .card-form {
+    opacity: 0.8px;
+}
+
+#home-section .icons-check {
+    color: var(--primary-color);
+    background: var(--font-color);
+    padding: 4px;
+    border-radius: 5px;
+    font-size: var(--icon-size);
+}
+
+/* Menu gauche */
+.home-inner .left-menu {
+    height: 7rem;
+    border-radius: 8px;
+}
+
+.home-inner .blog {
+    background-color: #3f6f9c;
+}
+
+.home-inner .aep {
+    background-color: #b24040;
+}
+
+.home-inner .about {
+    background-color: #a3be79;
+}
+
+.home-inner .blog-head, .home-inner .aep-head, .home-inner .about-head {
+    height: 2rem;
+    background-color: #fff;
+    border-radius: 8px 8px 0 0;
+    font-size: 1.2rem;
+}
+
+.home-inner .left-menu a {
+    text-decoration: none;
+}
+
+.left-menu a:hover {
+    background-color: lightblue;
+}
+
+.home-inner .getting-started {
+    font-size: 1.5rem;
+}
+
+.home-inner .started {
+    background-color: rgba(248, 249, 250, .3);
+}

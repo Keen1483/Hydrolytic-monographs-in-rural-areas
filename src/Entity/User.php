@@ -9,8 +9,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(
+ *      fields={"email"},
+ *      message="L'email que vous avez indiqué est déjà utilisé !"
+ * )
  */
 class User implements UserInterface
 {
@@ -24,7 +30,7 @@ class User implements UserInterface
     /**
      * @Assert\NotBlank
      * @Assert\Email(
-     *     message = "Cet email '{{ value }}' n'est pas alide."
+     *     message="Cet email '{{ value }}' n'est pas alide."
      * )
      * @ORM\Column(type="string", length=180, unique=true)
      */
@@ -38,8 +44,22 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 14,
+     *      minMessage = "Votre mot de passe doit avoir minimum {{ limit }} charactères",
+     *      maxMessage = "Votre mot de passe doit avoir maximun {{ limit }} charactères"
+     * )
      */
     private $password;
+
+    /**
+     * @Assert\EqualTo(
+     *      propertyPath="password",
+     *      message="Vous n'avez pas tapé le même mot de passe"
+     * )
+     */
+    public $password_confirm;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -47,8 +67,7 @@ class User implements UserInterface
      *      min = 4,
      *      max = 30,
      *      minMessage = "Votre nom doit avoir minimum {{ limit }} charactères",
-     *      maxMessage = "Votre nom doit avoir maximun {{ limit }} charactères",
-     *      allowEmptyString = false
+     *      maxMessage = "Votre nom doit avoir maximun {{ limit }} charactères"
      * )
      */
     private $username;
@@ -128,7 +147,7 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        //$roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
