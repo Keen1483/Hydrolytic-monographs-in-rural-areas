@@ -11,7 +11,7 @@ function show_easy_numpad() {
         <div class="easy-numpad-frame" id="easy-numpad-frame">
             <div class="easy-numpad-container">
                 <div class="easy-numpad-output-container">
-                    <p class="easy-numpad-output" id="easy-numpad-output"></p>
+                    <p class="easy-numpad-output" id="easy-numpad-output" style="color: black;"></p>
                 </div>
                 <div class="easy-numpad-number-container">
                     <table>

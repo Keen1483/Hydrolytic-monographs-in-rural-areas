@@ -12,6 +12,9 @@
             {# Material Icons #}
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+            {# fa icons #}
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+            
             {# plugin easy numpad stylesheet reference #}
             <link rel="stylesheet" href="{{ asset('css/easy-numpad.css') }}">
 
@@ -22,6 +25,7 @@
             <link rel="stylesheet" href="{{ asset('css/datepicker/jquery.dateselect.css') }}">
 
             <link rel="stylesheet" href="{{ asset('css/base-style.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/autocomplete.css') }}">
         {% endblock %}
     </head>
     <body>
@@ -223,14 +227,22 @@
             {# jQuery mousewheel #}
             <script src="{{ asset('js/datepicker/jquery.mousewheel.js') }}"></script>
 
-            {# form AEP #}
-            <script src="{{ asset('js/formAep.js') }}"></script>
-
             {# plugin easy numpad javascript reference #}
             <script src="{{ asset('js/easy-numpad.js') }}"></script>
 
             {# plugin jQuery datepicker javascript reference #}
             <script src="{{ asset('js/datepicker/jquery.dateselect.js') }}"></script>
+
+            {# plugin jQuery autocomplete javascript reference #}
+            <script src="{{ asset('js/autocomplete/scripts/jquery.mockjax.js') }}"></script>
+            <script src="{{ asset('js/autocomplete/src/jquery.autocomplete.js') }}"></script>
+            <script src="{{ asset('js/autocomplete/scripts/regions.js') }}"></script>
+            <script src="{{ asset('js/autocomplete/scripts/target.js') }}"></script>
+
+            
+            {# form AEP #}
+            <script src="{{ asset('js/formAep.js') }}"></script>
+            <script src="{{ asset('js/aep-list.js') }}"></script>
         {% endblock %}
     </body>
 </html>

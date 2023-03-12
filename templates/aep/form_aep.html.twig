@@ -11,9 +11,43 @@
             <fieldset class="localInformations">
                 <legend><h3>Local informations</h3></legend>
                 {% for localInformation in form.localInformations %}
-                    {{ form_row(localInformation.region, { 'label': 'Région', 'attr': { 'placeholder': "région de la source"}}) }}
-                    {{ form_row(localInformation.department, {'label': 'Département', 'attr': {'placeholder': 'département de la source'}}) }}
-                    {{ form_row(localInformation.borough, {'label': 'Arrondissement', 'attr': {'placeholder': 'arrondissement de la source'}}) }}
+                   {# {{ form_row(localInformation.region, { 'label': 'Région', 'attr': { 'placeholder': "région de la source"}}) }} #}
+                    <div class="form-group mb-5" style="position: relative;">
+                        {{ form_label(localInformation.region, 'Région') }}
+                        {{ form_widget(localInformation.region, {'attr': {'placeholder': "région de la source", 'class': 'autocomplete-region'}}) }}
+                        <input type="text" class="form-control" name="aep[localInformations][0][region]" id="autocomplete-ajax-x" disabled="disabled" style="color: #CCC; position: absolute; z-index: 1;"/>
+                    
+                        <small>{{ form_help(localInformation.region) }}</small>
+                    
+                        <div class="form-error">
+                            {{ form_errors(localInformation.region) }}
+                        </div>
+                    </div>
+                    
+                    {# {{ form_row(localInformation.department, {'label': 'Département', 'attr': {'placeholder': 'département de la source'}}) }} #}
+                    <div class="form-group mb-5" style="position: relative;">
+                        {{ form_label(localInformation.department, 'Département') }}
+                        {{ form_widget(localInformation.department, {'attr': { 'placeholder': 'département de la source', 'class': 'autocomplete-department'}}) }}
+                        <input type="text" class="form-control" name="aep[localInformations][0][department]" id="autocomplete-ajax-z" disabled="disabled" style="color: #CCC; position: absolute; z-index: 1;"/>
+                    
+                        <small>{{ form_help(localInformation.department) }}</small>
+                    
+                        <div class="form-error">
+                            {{ form_errors(localInformation.department) }}
+                        </div>
+                    </div>
+                    {# {{ form_row(localInformation.borough, {'label': 'Arrondissement', 'attr': {'placeholder': 'arrondissement de la source'}}) }} #}
+                    <div class="form-group mb-5" style="position: relative;">
+                        {{ form_label(localInformation.borough, 'Arrondissement') }}
+                        {{ form_widget(localInformation.borough, {'attr': {'placeholder': 'arrondissement de la source', 'class': 'autocomplete-borough'}}) }}
+                        <input type="text" class="form-control" name="aep[localInformations][0][borough]" id="autocomplete-ajax-y" disabled="disabled" style="color: #CCC; position: absolute; z-index: 1;"/>
+                    
+                        <small>{{ form_help(localInformation.borough) }}</small>
+                    
+                        <div class="form-error">
+                            {{ form_errors(localInformation.borough) }}
+                        </div>
+                    </div>
                     {{ form_row(localInformation.locality, {'label': 'Localité ou village', 'attr': {'placeholder': 'localité ou village de la source'}}) }}
                     {{ form_row(localInformation.district, {'label': 'Quartier', 'attr': {'placeholder': 'quartier de la source'}}) }}
                     {{ form_row(localInformation.population, {'label': 'Population', 'attr': {'placeholder': 'population de la localité', 'inputmode': 'decimal'}}) }}

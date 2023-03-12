@@ -22,8 +22,15 @@ use App\Form\AepType;
 use App\Repository\AepRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SearchType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @Route("/aep", name="aep_")
@@ -103,7 +110,7 @@ class AepController extends AbstractController
 
             // ------ On chope un user dans la base
             $repo = $this->getDoctrine()->getRepository(User::class);
-            $user = $repo->find(151);
+            $user = $repo->find(163);
             $aep->setUser($user);
 
             // On complète les données manquantes du formulaire
@@ -266,22 +273,103 @@ class AepController extends AbstractController
     /**
      * @Route("/liste", name="liste")
      */
-    public function aepListe(AepRepository $repo)
+    public function aepListe(AepRepository $repo, Request $request)
     {
         $aeps = $repo->findAll();
-        $listeAep = [];
 
-        foreach ($aeps as $aep) {
-            $listeAep[] = [
-                'aep' => $aep,
-                'user' => $aep->getUser()
-            ];
-        }
+        // Ajax action
+        if ($request->isXmlHttpRequest()) {
+            $aepInfos = [];
 
-        return $this->render('aep/aep_liste.html.twig', [
-            'liste_aep' => $listeAep,
-            'title' => 'Liste des AEP',
-        ]);
+            foreach ($aeps as $aep) {
+                $stickingBack = $this->getDoctrine()->getRepository(StickingBack::class)->findOneByAep($aep);
+                $storage = $this->getDoctrine()->getRepository(Storage::class)->findOneByAep($aep);
+                $agentCommunicationMode = $this->getDoctrine()->getRepository(AgentCommunicationMode::class)->findOneByAep($aep);
+                $equipmentAep = $this->getDoctrine()->getRepository(EquipmentAep::class)->findOneByAep($aep);
+                $waterTraitmentAnalysis = $this->getDoctrine()->getRepository(WaterTraitmentAnalysis::class)->findOneByAep($aep);
+                $managementMode = $this->getDoctrine()->getRepository(ManagementMode::class)->findOneByAep($aep);
+                $fundingMode = $this->getDoctrine()->getRepository(FundingMode::class)->findOneByAep($aep);
+                $maintenance = $this->getDoctrine()->getRepository(Maintenance::class)->findOneByAep($aep);
+
+                $aepPmh = $this->getDoctrine()->getRepository(DrillingPmh::class)->findOneByAep($aep);
+                $lostWell = $this->getDoctrine()->getRepository(LostWell::class)->findOneByDrillingPmh($aepPmh);
+
+                $aepImproveSource = $this->getDoctrine()->getRepository(ImproveSourceEquipmentType::class)->findOneByAep($aep);
+                $aepTraditionalWell = $this->getDoctrine()->getRepository(TraditionalWellEquipmentType::class)->findOneByAep($aep);
+
+                $localInformations = $this->getDoctrine()->getRepository(LocalInformations::class)->findOneByAep($aep);
+                $gpsCoordinates = $this->getDoctrine()->getRepository(GpsCoordinates::class)->findOneByLocalInformations($localInformations);
+            
+
+                $aepInfos[] = [
+                    'email_aep' => $aep->getUser()->getEmail(),
+                    'date_aep' => $aep->getCreatedAt(),
+                    'type_aep' => $aep->getType(),
+                    'source_aep' => $aep->getSource(),
+                    'region_localInformations' => $localInformations->getRegion(),
+                    'department_localInformations' => $localInformations->getDepartment(),
+                    'borough_localInformations' => $localInformations->getBorough(),
+                    'locality_localInformations' => $localInformations->getLocality(),
+                    'district_localInformations' => $localInformations->getDistrict(),
+                ];
+            }
+
+            return new JsonResponse($aepInfos);
+        } else {
+            $form_search = $this->createFormBuilder(null)
+                ->add('value', SearchType::class, [
+                    'constraints' => [
+                        new NotBlank(),
+                        new Length(['min' => 3, 'max' => 30],)
+                    ],
+                ])
+                ->add('property', HiddenType::class, [
+                    'constraints' => [
+                        new NotBlank(),
+                        new Length(['min' => 3, 'max' => 30],)
+                    ],
+                ])
+                ->add('entity', HiddenType::class, [
+                    'constraints' => [
+                        new NotBlank(),
+                        new Length(['min' => 3, 'max' => 30],)
+                    ],
+                ])
+                ->add('search', SubmitType::class)
+                ->getForm()
+            ;
+
+            $form_search->handleRequest($request);
+
+            if($form_search->isSubmitted() && $form_search->isValid()) {
+                $data = $form_search->getData();
+
+                $request->request->set('value', null);
+                $request->request->set('property', null);
+                $request->request->set('entity', null);
+
+                $value = trim($data['value']);
+                $property = trim($data['property']);
+                $entity = trim($data['entity']);
+
+                $class = sprintf('\App\Entity\%s', ucfirst($entity));
+                $findByProperty = 'findBy' . ucfirst($property);
+                
+                $backup = $this->getDoctrine()->getRepository($class)->$findByProperty($value);
+                
+                return $this->render('aep/aep_liste.html.twig', [
+                    'aeps' => $backup,
+                    'title' => 'Résultat de la recherche <i>' . $value . '</i>',
+                    'form_search' => $form_search->createView(),
+                ]);
+            }
+            
+            return $this->render('aep/aep_liste.html.twig', [
+                'aeps' => $aeps,
+                'title' => 'Liste des AEP',
+                'form_search' => $form_search->createView(),
+            ]);
+        }   
     }
 
     /**

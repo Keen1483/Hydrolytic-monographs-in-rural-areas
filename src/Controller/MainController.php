@@ -6,11 +6,20 @@ use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 class MainController extends AbstractController
 {
+    private $passwordEncoder;
+
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $this->passwordEncoder = $passwordEncoder;
+    }
 
     /**
      * @Route("/", name="app_homepage")
@@ -31,7 +40,7 @@ class MainController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('aep_home');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('main/index.html.twig', [
@@ -62,5 +71,31 @@ class MainController extends AbstractController
     public function userConnect()
     {
         return $this->render('main/user_connect.html.twig');
+    }
+
+    /**
+     * @Route("/ajax", name="ajax")
+     */
+    public function ajaxAction(Request $request)
+    {
+        $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+        
+        if ($request->isXmlHttpRequest()) {
+            $jsonData = [];
+            foreach ($users as $user) {
+                $temp = [
+                    'email' => $user->getEmail(),
+                    'username' => $user->getName(),
+                ];
+                $jsonData[] = $temp;
+            }
+
+            return new JsonResponse($jsonData);
+        } else {
+            return $this->render('main/ajax.html.twig', [
+                'title' => 'Ajax request',
+            ]);
+        }
+        
     }
 }
